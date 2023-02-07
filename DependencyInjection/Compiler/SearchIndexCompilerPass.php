@@ -40,14 +40,16 @@ class SearchIndexCompilerPass implements CompilerPassInterface
         $queryProvider = $container->getDefinition('scorpio_sphinx_search.search_query_provider');
 
         foreach ($container->findTaggedServiceIds('scorpio_sphinx_search.index') as $id => $attributes) {
-            foreach ( $attributes as $key => $value ) {
-                if ( $key == 'query' && $value ) {
-                    $service = $prefix . '.' . $id;
+            foreach ($attributes as $key => $value) {
+                foreach ($value as $tag => $tagValue) {
+                    if ($tag == 'query' && $value) {
+                        $service = $prefix . '.' . $id;
 
-                    $definition = $container->register($service, SearchQuery::class);
-                    $definition->addArgument(new Reference($id));
+                        $definition = $container->register($service, SearchQuery::class);
+                        $definition->addArgument(new Reference($id));
 
-                    $queryProvider->addMethodCall('addQuery', [new Reference($service)]);
+                        $queryProvider->addMethodCall('addQuery', [new Reference($service)]);
+                    }
                 }
             }
         }
