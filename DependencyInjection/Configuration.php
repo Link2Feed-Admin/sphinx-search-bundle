@@ -28,8 +28,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('scorpio_sphinx_search');
+        $treeBuilder = new TreeBuilder('scorpio_sphinx_search');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
